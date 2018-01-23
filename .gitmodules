@@ -1,0 +1,3 @@
+[submodule "lambda/flask_ask"]
+	path = lambda/flask_ask
+	url = https://github.com/johnwheeler/flask-ask.git/
