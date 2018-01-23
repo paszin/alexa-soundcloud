@@ -36,7 +36,8 @@
           "play my favorites",
           "play my likes",
           "play something nice",
-          "play music"
+          "play music",
+          "play my favorite tracks"
         ],
         "slots": []
       }

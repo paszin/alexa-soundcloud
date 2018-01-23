@@ -8,7 +8,17 @@ But with a little bit of configuration, you can easily build your own soundcloud
 
 (The following guide aussumes that you have an amazon developer account and that you are a bit familiar with amazon web services)
 
+## Samples
 
+*Alexa, tell soundcloud play my favorite tracks*
+
+*Alexa, play next*
+
+*Alexa, play previous*
+
+*Alexa, ask soundcloud for the current track* (TODO)
+
+*Alexa, soundcloud shuffle* (TODO)
 
 
 ## 1. Create the Alexa Skill
