@@ -15,9 +15,9 @@ But with a little bit of configuration, you can easily build your own soundcloud
 
 - login to [your alexa developer account](https://developer.amazon.com/edw/home.html#/)
 - [create a new skill](https://developer.amazon.com/edw/home.html#/skill/create/)
-- *Skill Information* provide a name and a invocation name (e.g. soundcloud) and click the radio button for audio player 
-- *Interaction Model* (launch the new editor) open the `code` tab and paste `interactionModel_your_language.json` into the text field. click save and build the model
-- *Configuration* (skip this for now, in the next step, we define the aws lambda function)
+- **Skill Information** provide a name and a invocation name (e.g. soundcloud) and click the radio button for audio player 
+- **Interaction Model** (launch the new editor) open the `code` tab and paste `interactionModel_your_language.json` into the text field. click save and build the model
+- **Configuration** (skip this for now, in the next step, we define the aws lambda function)
 
 
 ## 2. Deploy the code

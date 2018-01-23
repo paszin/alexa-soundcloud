@@ -1,0 +1,49 @@
+{
+  "languageModel": {
+    "intents": [
+      {
+        "name": "AMAZON.CancelIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.HelpIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.NextIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PauseIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.PreviousIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.ResumeIntent",
+        "samples": []
+      },
+      {
+        "name": "AMAZON.StopIntent",
+        "samples": []
+      },
+      {
+        "name": "FavoritesIntent",
+        "samples": [
+          "Spiele meine Favoriten",
+          "Lieblingssongs",
+          "Likes",
+          "Spiele meine Lieblingssongs",
+          "Spiele meine favorisierten Songs",
+          "Spiele meine Lieblingstracks",
+          "Spiele meine Lieblingslieder",
+          "Spiel was schönes"
+        ],
+        "slots": []
+      }
+    ],
+    "invocationName": "soundcloud"
+  }
+}
