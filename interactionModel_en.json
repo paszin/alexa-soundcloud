@@ -40,7 +40,17 @@
           "play my favorite tracks"
         ],
         "slots": []
-      }
+      },
+      {
+        "name": "TrackInfoIntent",
+        "samples": [
+          "the current track",
+          "what is playing right now",
+          "name of the current track",
+          "what is the name"
+        ],
+        "slots": []
+      },
     ],
     "invocationName": "soundcloud"
   }

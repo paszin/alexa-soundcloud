@@ -42,6 +42,19 @@
           "Spiel was schönes"
         ],
         "slots": []
+      },
+      {
+        "name": "TrackInfoIntent",
+        "samples": [
+          "was läuft gerade",
+          "wie heißt dieser Track",
+          "wie heißt dieser Titel",
+          "was hören meine Ohren da",
+          "sag mal wie der Track heißt",
+          "was läuft denn da",
+          "wie heißt das lied"
+        ],
+        "slots": []
       }
     ],
     "invocationName": "soundcloud"

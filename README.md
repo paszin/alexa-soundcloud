@@ -4,9 +4,7 @@ stream and control your soundcloud music from alexa
 
 This is not an offical app. According to this [blog post](https://techdev.io/de/developer-blog/the-complete-guide-to-running-an-alexa-soundcloud-skill) it looks like there is no support from soundcloud.
 
-But with a little bit of configuration, you can easily build your own soundcloud alexa skill.
 
-(The following guide aussumes that you have an amazon developer account and that you are a bit familiar with amazon web services)
 
 ## Samples
 
@@ -16,9 +14,16 @@ But with a little bit of configuration, you can easily build your own soundcloud
 
 *Alexa, play previous*
 
-*Alexa, ask soundcloud for the current track* (TODO)
+*Alexa, ask soundcloud for the current track*
 
 *Alexa, soundcloud shuffle* (TODO)
+
+
+But with a little bit of configuration, you can easily build your own soundcloud alexa skill.
+
+(The following guide aussumes that you have an amazon developer account and that you are a bit familiar with amazon web services)
+
+
 
 
 ## 1. Create the Alexa Skill
@@ -37,7 +42,16 @@ But with a little bit of configuration, you can easily build your own soundcloud
 - hit the create function button
 - add the trigger amazon skill kit
 - upload the zip file
-- enviroment variables
+- enviroment variables `AS_USER_ID` 125445454 (your id)
+
+
+## Setup for Development
+
+`git clone https://github.com/paszin/alexa-soundcloud.git`
+
+`git submodule init`
+
+`make lambdazip`
 
 
 ## Developer Comments

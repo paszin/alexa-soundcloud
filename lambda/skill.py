@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 import collections
 import logging
 import os
@@ -8,10 +9,16 @@ from copy import copy
 import soundcloud
 
 from flask import Flask
-from flask_ask import Ask, question, statement, audio, current_stream, logger, session
+
+try:
+    # my local development setup
+    from flask_ask_local import Ask, question, statement, audio, current_stream, logger, session
+except:
+    from flask_ask import Ask, question, statement, audio, current_stream, logger, session
 
 from queue_manager import QueueManager
 from ssml_builder import SSML
+#import responses
 
 ## Soundcloud Setup
 sc_client_id = "8c63b5c6be310a43a0695f442b90d53d"
@@ -19,6 +26,8 @@ sc_client = soundcloud.Client(client_id=sc_client_id)
 sc_my_user_id = os.environ.get("AS_USER_ID") or 14530021
 
 sc_access_token = os.environ.get("AS_ACCESS_TOKEN")
+if sc_access_token:
+    sc_client = soundcloud.Client(access_token=sc_access_token)
 
 
 ## Flask-Ask Setup    
@@ -32,6 +41,9 @@ def getStreamUrl(_id):
     '''return stream url for the given id'''
     return "https://api.soundcloud.com/tracks/{_id}/stream?client_id={sc_client_id}".format(_id=_id, sc_client_id=sc_client_id)
 
+
+def getTrack(_id):
+    return sc_client.get('/tracks/' + str(_id)).fields()
 
 @ask.launch
 def launch():
@@ -53,6 +65,18 @@ def start_playlist():
     session.attributes["data"] = queue.export()
     return audio(str(speech)).play(stream_url)
 
+@ask.intent('TrackInfoIntent')
+def track_info_intent():
+    track = session.attributes["current_track"]
+    title = track["title"]
+    artist = track["user"]["username"]
+    if artist in title:
+        msg = title
+    else:
+        msg = title + ' by ' + artist
+    return statement(msg)\
+    .standard_card(title=msg, text='', small_image_url=track["artwork_url"], large_image_url=None)
+
 
 # QueueManager object is not stepped forward here.
 # This allows for Next Intents and on_playback_finished requests to trigger the step
@@ -61,14 +85,8 @@ def nearly_finished():
     if session.attributes.get("data"):
         queue.load(session.attributes.get("data"))
     if queue.up_next:
-        _infodump('Alexa is now ready for a Next or Previous Intent')
-        # dump_stream_info()
         next_id = queue.up_next
-        #_infodump('Enqueueing {}'.format(getStreamUrl(next_id)))
         return audio().enqueue(getStreamUrl(next_id))
-    else:
-        pass #_infodump('Nearly finished with last song in playlist')
-
 
 @ask.on_playback_finished()
 def play_back_finished():
@@ -77,8 +95,7 @@ def play_back_finished():
     if queue.up_next:
         queue.step()
         session.attributes["data"] = queue.export()
-        #_infodump('stepped queue forward')
-        #dump_stream_info()
+        session.attributes["current_track"] = sc_client.get('/tracks/' + str(queue.current))
     else:
         return statement('You have reached the end of the playlist!')
 
@@ -87,15 +104,14 @@ def play_back_finished():
 # next_stream will match queue.up_next and enqueue Alexa with the correct subsequent stream.
 @ask.intent('AMAZON.NextIntent')
 def next_song():
+    print "next"
     if session.attributes.get("data"):
         queue.load(session.attributes.get("data"))
     if queue.up_next:
-        speech = 'playing next queued song'
         next_stream = getStreamUrl(queue.step())
-        #_infodump('Stepped queue forward to {}'.format(next_stream))
-        #dump_stream_info()
         session.attributes["data"] = queue.export()
-        return audio(speech).play(next_stream)
+        session.attributes["current_track"] = getTrack(queue.current)
+        return audio('weiter mit').play(next_stream)
     else:
         return audio('There are no more songs in the queue')
 
@@ -105,10 +121,10 @@ def previous_song():
     if session.attributes.get("data"):
         queue.load(session.attributes.get("data"))
     if queue.previous:
-        speech = 'playing previously played song'
         prev_stream = getStreamUrl(queue.step_back())
         session.attributes["data"] = queue.export()
-        return audio(speech).play(prev_stream)
+        session.attributes["current_track"] = getTrack(queue.current)
+        return audio().play(prev_stream)
 
     else:
         return audio('There are no songs in your playlist history.')
@@ -119,24 +135,18 @@ def restart_track():
     if session.attributes.get("data"):
         queue.load(session.attributes.get("data"))
     if queue.current:
-        speech = 'Restarting current track'
-        #dump_stream_info()
-        return audio(speech).play(queue.current, offset=0)
+        return audio().play(getStreamUrl(queue.current), offset=0)
     else:
         return statement('There is no current song')
 
 
 @ask.on_playback_started()
 def started(offset, token, url):
-    #_infodump('Started audio stream for track {}'.format(queue.current_position))
-    #dump_stream_info()
     pass
 
 @ask.on_playback_stopped()
 def stopped(offset, token):
     pass
-    #_infodump('Stopped audio stream for track {}'.format(queue.current_position))
-
 
 @ask.intent('AMAZON.PauseIntent')
 def pause():
@@ -147,7 +157,7 @@ def pause():
     #    queue.current_position, seconds)
     #_infodump(msg)
     #dump_stream_info()
-    return audio('psst').stop()
+    return audio().stop()
 
 
 @ask.intent('AMAZON.ResumeIntent')
@@ -158,7 +168,7 @@ def resume():
     #msg = 'Resuming the Playlist on track {}, offset at {} seconds'.format(queue.current_position, seconds)
     #_infodump(msg)
     #dump_stream_info()
-    return audio('').resume()
+    return audio().resume()
 
 
 @ask.session_ended
