@@ -51,6 +51,8 @@ But with a little bit of configuration, you can easily build your own soundcloud
 
 `git submodule init`
 
+`git submodule update`
+
 `make lambdazip`
 
 
