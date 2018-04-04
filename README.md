@@ -42,7 +42,7 @@ But with a little bit of configuration, you can easily build your own soundcloud
 - hit the create function button
 - add the trigger amazon skill kit
 - upload the zip file
-- enviroment variables `AS_USER_ID` 125445454 (your id)
+- enviroment variables `AS_USER_ID` 125445454 (your id)  ( [how to find my user id](https://www.appypie.com/faqs/how-can-i-get-my-soundcloud-user-id) )
 
 
 ## Setup for Development
